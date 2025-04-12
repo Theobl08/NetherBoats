@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.theobl.netherboats.Config;
 import net.theobl.netherboats.NetherBoats;
 import org.jetbrains.annotations.NotNull;
@@ -34,21 +34,21 @@ public class ModChestBoatEntity extends ChestBoat {
         this.zo = pZ;
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_ID_TYPE, ModBoatEntity.Type.CRIMSON.ordinal());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ID_TYPE, ModBoatEntity.Type.CRIMSON.ordinal());
     }
 
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         pCompound.putString("Type", this.getModVariant().getSerializedName());
-        this.addChestVehicleSaveData(pCompound);
+        this.addChestVehicleSaveData(pCompound, this.registryAccess());
     }
 
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         if (pCompound.contains("Type", 8)) {
             this.setVariant(ModBoatEntity.Type.byName(pCompound.getString("Type")));
         }
-        this.readChestVehicleSaveData(pCompound);
+        this.readChestVehicleSaveData(pCompound, this.registryAccess());
     }
 
     public Item getDropItem() {
@@ -73,10 +73,6 @@ public class ModChestBoatEntity extends ChestBoat {
         return this.isNetherWood(this.getModVariant()) && Config.canNetherBoatUsedOnLava;
     }
 
-    @Override
-    public boolean shouldUpdateFluidWhileRiding(FluidState state, Entity rider) {
-        return !isNetherWood(this.getModVariant()) && !Config.canNetherBoatUsedOnLava && state.shouldUpdateWhileBoating(this, rider);
-    }
 
     @Override
     public boolean canBoatInFluid(FluidState state) {

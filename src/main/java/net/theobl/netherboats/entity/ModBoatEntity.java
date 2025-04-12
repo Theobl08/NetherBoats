@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.theobl.netherboats.Config;
 import net.theobl.netherboats.NetherBoats;
 import org.jetbrains.annotations.NotNull;
@@ -39,9 +39,9 @@ public class ModBoatEntity extends Boat {
         this.zo = pZ;
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_ID_TYPE, Type.CRIMSON.ordinal());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ID_TYPE, Type.CRIMSON.ordinal());
     }
 
     public Item getDropItem() {
@@ -81,7 +81,7 @@ public class ModBoatEntity extends Boat {
         private final String name;
         private final Block planks;
 
-        private static final IntFunction<ModBoatEntity.Type> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
+        private static final IntFunction<Type> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
 
         private Type(Block pPlanks, String pName) {
             this.name = pName;
@@ -108,11 +108,11 @@ public class ModBoatEntity extends Boat {
         /**
          * Get a boat type by its enum ordinal
          */
-        public static ModBoatEntity.Type byId(int pId) {
+        public static Type byId(int pId) {
             return BY_ID.apply(pId);
         }
 
-        public static ModBoatEntity.Type byName(String pName) {
+        public static Type byName(String pName) {
             Type[] type = values();
             return Arrays.stream(type).filter(t -> t.getName().equals(pName)).findFirst().orElse(type[0]);
         }
@@ -121,11 +121,6 @@ public class ModBoatEntity extends Boat {
     @Override
     public boolean fireImmune() {
         return this.isNetherWood(this.getModVariant()) && Config.canNetherBoatUsedOnLava;
-    }
-
-    @Override
-    public boolean shouldUpdateFluidWhileRiding(FluidState state, Entity rider) {
-        return !isNetherWood(this.getModVariant()) && !Config.canNetherBoatUsedOnLava && state.shouldUpdateWhileBoating(this, rider);
     }
 
     @Override
@@ -140,7 +135,7 @@ public class ModBoatEntity extends Boat {
                 (type.equals(Fluids.LAVA.getFluidType()) && this.isNetherWood(this.getModVariant()) && Config.canNetherBoatUsedOnLava);
     }
 
-    public boolean isNetherWood(ModBoatEntity.Type boatType){
+    public boolean isNetherWood(Type boatType){
         return ((FireBlock) Blocks.FIRE).getBurnOdds(boatType.getPlanks().defaultBlockState()) == 0;
     }
 }

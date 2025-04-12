@@ -20,7 +20,7 @@ public class ModBoatRenderer extends BoatRenderer {
     public ModBoatRenderer(EntityRendererProvider.Context pContext, boolean pChestBoat) {
         super(pContext, pChestBoat);
         this.boatResources = Stream.of(ModBoatEntity.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type,
-                type -> Pair.of(new ResourceLocation(NetherBoats.MODID, getTextureLocation(type, pChestBoat)), this.createBoatModel(pContext, type, pChestBoat))));
+                type -> Pair.of(ResourceLocation.fromNamespaceAndPath(NetherBoats.MODID, getTextureLocation(type, pChestBoat)), this.createBoatModel(pContext, type, pChestBoat))));
     }
 
     private ListModel<Boat> createBoatModel(EntityRendererProvider.Context pContext, ModBoatEntity.Type pType, boolean pChestBoat) {
