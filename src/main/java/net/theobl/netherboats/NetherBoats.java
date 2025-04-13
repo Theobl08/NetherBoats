@@ -3,13 +3,16 @@ package net.theobl.netherboats;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BoatModel;
-import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -58,11 +61,17 @@ public class NetherBoats {
 
     // Creates a new food item with the id "netherboats:example_id", nutrition 1 and saturation 2
 //    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder().alwaysEdible().nutrition(1).saturationModifier(2f).build()));
-    public static final DeferredItem<Item> CRIMSON_BOAT = ITEMS.register("crimson_boat", () -> new ModBoatItem(false, ModBoatEntity.Type.CRIMSON, new Item.Properties().stacksTo(1)));
-    public static final DeferredItem<Item> WARPED_BOAT = ITEMS.register("warped_boat", () -> new ModBoatItem(false, ModBoatEntity.Type.WARPED, new Item.Properties().stacksTo(1)));
-    public static final DeferredItem<Item> CRIMSON_CHEST_BOAT = ITEMS.register("crimson_chest_boat", () -> new ModBoatItem(true, ModBoatEntity.Type.CRIMSON, new Item.Properties().stacksTo(1)));
-    public static final DeferredItem<Item> WARPED_CHEST_BOAT = ITEMS.register("warped_chest_boat", () -> new ModBoatItem(true, ModBoatEntity.Type.WARPED, new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> CRIMSON_BOAT = ITEMS.register("crimson_boat",
+            () -> new BoatItem(ModEntities.CRIMSON_BOAT.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "crimson_boat"))).stacksTo(1)));
 
+    public static final DeferredItem<Item> CRIMSON_CHEST_BOAT = ITEMS.register("crimson_chest_boat",
+            () -> new BoatItem(ModEntities.CRIMSON_CHEST_BOAT.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "crimson_chest_boat"))).stacksTo(1)));
+
+    public static final DeferredItem<Item> WARPED_BOAT = ITEMS.register("warped_boat",
+            () -> new BoatItem(ModEntities.WARPED_BOAT.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "warped_boat"))).stacksTo(1)));
+
+    public static final DeferredItem<Item> WARPED_CHEST_BOAT = ITEMS.register("warped_chest_boat",
+            () -> new BoatItem(ModEntities.WARPED_CHEST_BOAT.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "warped_chest_boat"))).stacksTo(1)));
     // Creates a creative tab with the id "netherboats:example_tab" for the example item, that is placed after the combat tab
 //    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.netherboats")).withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> EXAMPLE_ITEM.get().getDefaultInstance()).displayItems((parameters, output) -> {
 //        output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
@@ -131,8 +140,10 @@ public class NetherBoats {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-            EntityRenderers.register(ModEntities.NETHER_BOAT.get(), pContext -> new ModBoatRenderer(pContext, false));
-            EntityRenderers.register(ModEntities.NETHER_CHEST_BOAT.get(), pContext -> new ModBoatRenderer(pContext, true));
+            EntityRenderers.register(ModEntities.CRIMSON_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.CRIMSON_BOAT_LAYER));
+            EntityRenderers.register(ModEntities.CRIMSON_CHEST_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.CRIMSON_CHEST_BOAT_LAYER));
+            EntityRenderers.register(ModEntities.WARPED_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.WARPED_BOAT_LAYER));
+            EntityRenderers.register(ModEntities.WARPED_CHEST_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.WARPED_CHEST_BOAT_LAYER));
 
             ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, RenderType.translucent());
@@ -140,10 +151,10 @@ public class NetherBoats {
 
         @SubscribeEvent
         public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event){
-            event.registerLayerDefinition(ModModelLayers.CRIMSON_BOAT_LAYER, BoatModel::createBodyModel);
-            event.registerLayerDefinition(ModModelLayers.WARPED_BOAT_LAYER, BoatModel::createBodyModel);
-            event.registerLayerDefinition(ModModelLayers.CRIMSON_CHEST_BOAT_LAYER, ChestBoatModel::createBodyModel);
-            event.registerLayerDefinition(ModModelLayers.WARPED_CHEST_BOAT_LAYER, ChestBoatModel::createBodyModel);
+            event.registerLayerDefinition(ModModelLayers.CRIMSON_BOAT_LAYER, BoatModel::createBoatModel);
+            event.registerLayerDefinition(ModModelLayers.WARPED_BOAT_LAYER, BoatModel::createBoatModel);
+            event.registerLayerDefinition(ModModelLayers.CRIMSON_CHEST_BOAT_LAYER, BoatModel::createChestBoatModel);
+            event.registerLayerDefinition(ModModelLayers.WARPED_CHEST_BOAT_LAYER, BoatModel::createChestBoatModel);
         }
     }
 }

@@ -3,16 +3,14 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "#": {
-      "item": "minecraft:crimson_planks"
-    }
+    "#": "minecraft:warped_planks"
   },
   "pattern": [
     "# #",
     "###"
   ],
   "result": {
-    "item": "netherboats:crimson_boat"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "netherboats:warped_boat"
+  }
 }
