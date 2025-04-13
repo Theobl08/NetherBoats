@@ -3,5 +3,6 @@
   "item.netherboats.crimson_boat": "Crimson Boat",
   "item.netherboats.crimson_chest_boat": "Crimson Boat with Chest",
   "item.netherboats.warped_boat": "Warped Boat",
-  "item.netherboats.warped_chest_boat": "Warped Boat with Chest"
+  "item.netherboats.warped_chest_boat": "Warped Boat with Chest",
+  "netherboats.configuration.canNetherBoatUsedOnInLava": "Allow use on lava"
 }
