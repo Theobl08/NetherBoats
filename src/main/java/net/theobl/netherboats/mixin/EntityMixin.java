@@ -27,8 +27,6 @@ public abstract class EntityMixin {
         Entity vehicle = getVehicle();
         if(vehicle instanceof ModBoatEntity || vehicle instanceof ModChestBoatEntity) {
             if (remainingFireTicks > 0) {
-                //((Entity)(Object)this).hurt(((Entity)(Object)this).damageSources().onFire(), 1.0f);
-                //remainingFireTicks = Math.max(remainingFireTicks - 1, 0);
                 clearFire();
             }
             ci.cancel();
