@@ -30,6 +30,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.theobl.netherboats.entity.*;
 import org.slf4j.Logger;
 
+import static net.minecraft.world.item.CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
+
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(NetherBoats.MODID)
 public class NetherBoats {
@@ -41,17 +43,17 @@ public class NetherBoats {
     // Create a Deferred Register to hold Items which will all be registered under the "netherboats" namespace
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 
-    public static final DeferredItem<Item> CRIMSON_BOAT = ITEMS.register("crimson_boat",
-            () -> new BoatItem(ModEntities.CRIMSON_BOAT.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "crimson_boat"))).stacksTo(1)));
+    public static final DeferredItem<Item> CRIMSON_BOAT = ITEMS.registerItem("crimson_boat",
+            p -> new BoatItem(ModEntities.CRIMSON_BOAT.get(), p), new Item.Properties().stacksTo(1));
 
-    public static final DeferredItem<Item> CRIMSON_CHEST_BOAT = ITEMS.register("crimson_chest_boat",
-            () -> new BoatItem(ModEntities.CRIMSON_CHEST_BOAT.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "crimson_chest_boat"))).stacksTo(1)));
+    public static final DeferredItem<Item> CRIMSON_CHEST_BOAT = ITEMS.registerItem("crimson_chest_boat",
+            p -> new BoatItem(ModEntities.CRIMSON_CHEST_BOAT.get(), p), new Item.Properties().stacksTo(1));
 
-    public static final DeferredItem<Item> WARPED_BOAT = ITEMS.register("warped_boat",
-            () -> new BoatItem(ModEntities.WARPED_BOAT.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "warped_boat"))).stacksTo(1)));
+    public static final DeferredItem<Item> WARPED_BOAT = ITEMS.registerItem("warped_boat",
+            p -> new BoatItem(ModEntities.WARPED_BOAT.get(), p), new Item.Properties().stacksTo(1));
 
-    public static final DeferredItem<Item> WARPED_CHEST_BOAT = ITEMS.register("warped_chest_boat",
-            () -> new BoatItem(ModEntities.WARPED_CHEST_BOAT.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(MODID, "warped_chest_boat"))).stacksTo(1)));
+    public static final DeferredItem<Item> WARPED_CHEST_BOAT = ITEMS.registerItem("warped_chest_boat",
+            p -> new BoatItem(ModEntities.WARPED_CHEST_BOAT.get(), p), new Item.Properties().stacksTo(1));
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
@@ -77,16 +79,16 @@ public class NetherBoats {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+        LOGGER.info("Registering Crimson and Warped boats");
     }
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            event.insertAfter(Items.BAMBOO_CHEST_RAFT.getDefaultInstance(), CRIMSON_BOAT.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(CRIMSON_BOAT.get().getDefaultInstance(), CRIMSON_CHEST_BOAT.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(CRIMSON_CHEST_BOAT.get().getDefaultInstance(), WARPED_BOAT.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(WARPED_BOAT.get().getDefaultInstance(), WARPED_CHEST_BOAT.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(Items.BAMBOO_CHEST_RAFT.getDefaultInstance(), CRIMSON_BOAT.get().getDefaultInstance(), PARENT_AND_SEARCH_TABS);
+            event.insertAfter(CRIMSON_BOAT.get().getDefaultInstance(), CRIMSON_CHEST_BOAT.get().getDefaultInstance(), PARENT_AND_SEARCH_TABS);
+            event.insertAfter(CRIMSON_CHEST_BOAT.get().getDefaultInstance(), WARPED_BOAT.get().getDefaultInstance(), PARENT_AND_SEARCH_TABS);
+            event.insertAfter(WARPED_BOAT.get().getDefaultInstance(), WARPED_CHEST_BOAT.get().getDefaultInstance(), PARENT_AND_SEARCH_TABS);
         }
     }
 
@@ -94,7 +96,7 @@ public class NetherBoats {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("Welcome to a world with nether boats !");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
@@ -103,12 +105,10 @@ public class NetherBoats {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-            EntityRenderers.register(ModEntities.CRIMSON_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.CRIMSON_BOAT_LAYER));
-            EntityRenderers.register(ModEntities.CRIMSON_CHEST_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.CRIMSON_CHEST_BOAT_LAYER));
-            EntityRenderers.register(ModEntities.WARPED_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.WARPED_BOAT_LAYER));
-            EntityRenderers.register(ModEntities.WARPED_CHEST_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.WARPED_CHEST_BOAT_LAYER));
+            EntityRenderers.register(ModEntities.CRIMSON_BOAT.get(), context -> new BoatRenderer(context, ModModelLayers.CRIMSON_BOAT_LAYER));
+            EntityRenderers.register(ModEntities.CRIMSON_CHEST_BOAT.get(), context -> new BoatRenderer(context, ModModelLayers.CRIMSON_CHEST_BOAT_LAYER));
+            EntityRenderers.register(ModEntities.WARPED_BOAT.get(), context -> new BoatRenderer(context, ModModelLayers.WARPED_BOAT_LAYER));
+            EntityRenderers.register(ModEntities.WARPED_CHEST_BOAT.get(), context -> new BoatRenderer(context, ModModelLayers.WARPED_CHEST_BOAT_LAYER));
 
             ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, ChunkSectionLayer.TRANSLUCENT);
             ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, ChunkSectionLayer.TRANSLUCENT);
