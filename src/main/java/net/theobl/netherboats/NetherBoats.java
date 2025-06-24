@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -132,7 +133,7 @@ public class NetherBoats {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
@@ -144,8 +145,8 @@ public class NetherBoats {
             EntityRenderers.register(ModEntities.WARPED_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.WARPED_BOAT_LAYER));
             EntityRenderers.register(ModEntities.WARPED_CHEST_BOAT.get(), pContext -> new BoatRenderer(pContext, ModModelLayers.WARPED_CHEST_BOAT_LAYER));
 
-            ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, ChunkSectionLayer.TRANSLUCENT);
+            ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, ChunkSectionLayer.TRANSLUCENT);
         }
 
         @SubscribeEvent
