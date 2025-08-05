@@ -26,9 +26,9 @@ public abstract class EntityMixin {
     private void lavaHurt(CallbackInfo ci) {
         Entity vehicle = getVehicle();
         if(vehicle instanceof ModBoatEntity || vehicle instanceof ModChestBoatEntity) {
-            if (remainingFireTicks > 0) {
-                clearFire();
-            }
+//            if (remainingFireTicks > 0) {
+//                clearFire();
+//            }
             ci.cancel();
         }
     }
@@ -38,7 +38,7 @@ public abstract class EntityMixin {
     private void setRemainingFireTicks(int remainingFireTicks, CallbackInfo ci) {
         Entity vehicle = getVehicle();
         if(vehicle instanceof ModBoatEntity || vehicle instanceof ModChestBoatEntity) {
-            if (((Entity) (Object) this) instanceof Player) {
+            if (((Entity) (Object) this) instanceof Player && vehicle.isInLava()) {
                 this.remainingFireTicks = 0;
             }
         }
