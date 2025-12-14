@@ -2,14 +2,14 @@ package net.theobl.netherboats;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.api.distmarker.Dist;
@@ -44,16 +44,16 @@ public class NetherBoats {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 
     public static final DeferredItem<Item> CRIMSON_BOAT = ITEMS.registerItem("crimson_boat",
-            p -> new BoatItem(ModEntities.CRIMSON_BOAT.get(), p), new Item.Properties().stacksTo(1));
+            p -> new BoatItem(ModEntities.CRIMSON_BOAT.get(), p), p -> p.stacksTo(1));
 
     public static final DeferredItem<Item> CRIMSON_CHEST_BOAT = ITEMS.registerItem("crimson_chest_boat",
-            p -> new BoatItem(ModEntities.CRIMSON_CHEST_BOAT.get(), p), new Item.Properties().stacksTo(1));
+            p -> new BoatItem(ModEntities.CRIMSON_CHEST_BOAT.get(), p), p -> p.stacksTo(1));
 
     public static final DeferredItem<Item> WARPED_BOAT = ITEMS.registerItem("warped_boat",
-            p -> new BoatItem(ModEntities.WARPED_BOAT.get(), p), new Item.Properties().stacksTo(1));
+            p -> new BoatItem(ModEntities.WARPED_BOAT.get(), p), p-> p.stacksTo(1));
 
     public static final DeferredItem<Item> WARPED_CHEST_BOAT = ITEMS.registerItem("warped_chest_boat",
-            p -> new BoatItem(ModEntities.WARPED_CHEST_BOAT.get(), p), new Item.Properties().stacksTo(1));
+            p -> new BoatItem(ModEntities.WARPED_CHEST_BOAT.get(), p), p ->p.stacksTo(1));
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.

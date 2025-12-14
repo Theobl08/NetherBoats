@@ -3,7 +3,7 @@ package net.theobl.netherboats.entity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
@@ -27,7 +27,7 @@ public class ModEntities {
 
 
     private static ResourceKey<EntityType<?>> entityId(String name) {
-        return ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(NetherBoats.MODID, name));
+        return ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(NetherBoats.MODID, name));
     }
 
     private static EntityType.EntityFactory<ModBoatEntity> boatFactory(Supplier<Item> boatItemGetter) {
