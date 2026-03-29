@@ -1,17 +1,10 @@
 package net.theobl.netherboats;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.object.boat.BoatModel;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -109,9 +102,6 @@ public class NetherBoats {
             EntityRenderers.register(ModEntities.CRIMSON_CHEST_BOAT.get(), context -> new BoatRenderer(context, ModModelLayers.CRIMSON_CHEST_BOAT_LAYER));
             EntityRenderers.register(ModEntities.WARPED_BOAT.get(), context -> new BoatRenderer(context, ModModelLayers.WARPED_BOAT_LAYER));
             EntityRenderers.register(ModEntities.WARPED_CHEST_BOAT.get(), context -> new BoatRenderer(context, ModModelLayers.WARPED_CHEST_BOAT_LAYER));
-
-            ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, ChunkSectionLayer.TRANSLUCENT);
-            ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, ChunkSectionLayer.TRANSLUCENT);
         }
 
         @SubscribeEvent
