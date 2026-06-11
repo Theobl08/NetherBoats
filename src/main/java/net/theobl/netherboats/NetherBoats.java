@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -17,6 +19,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -82,6 +85,16 @@ public class NetherBoats {
             event.insertAfter(CRIMSON_BOAT.get().getDefaultInstance(), CRIMSON_CHEST_BOAT.get().getDefaultInstance(), PARENT_AND_SEARCH_TABS);
             event.insertAfter(CRIMSON_CHEST_BOAT.get().getDefaultInstance(), WARPED_BOAT.get().getDefaultInstance(), PARENT_AND_SEARCH_TABS);
             event.insertAfter(WARPED_BOAT.get().getDefaultInstance(), WARPED_CHEST_BOAT.get().getDefaultInstance(), PARENT_AND_SEARCH_TABS);
+        }
+    }
+
+    @SubscribeEvent
+    private void livingIncomingDamage(LivingIncomingDamageEvent event) {
+        LivingEntity source = event.getEntity();
+        Entity vehicle = source.getVehicle();
+        if(vehicle instanceof ModBoatEntity || vehicle instanceof ModChestBoatEntity) {
+            source.clearFire();
+            event.setCanceled(true);
         }
     }
 
