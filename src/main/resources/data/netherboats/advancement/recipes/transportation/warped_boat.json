@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "netherboats:warped_boat"
+        "recipes": "netherboats:warped_boat"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
