@@ -4,9 +4,11 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.core.dispenser.BoatDispenseItemBehavior;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -76,6 +78,12 @@ public class NetherBoats {
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
         LOGGER.info("Registering Crimson and Warped boats");
+        event.enqueueWork(() -> {
+            DispenserBlock.registerBehavior(CRIMSON_BOAT, new BoatDispenseItemBehavior(ModEntities.CRIMSON_BOAT.get()));
+            DispenserBlock.registerBehavior(WARPED_BOAT, new BoatDispenseItemBehavior(ModEntities.WARPED_BOAT.get()));
+            DispenserBlock.registerBehavior(CRIMSON_CHEST_BOAT, new BoatDispenseItemBehavior(ModEntities.CRIMSON_CHEST_BOAT.get()));
+            DispenserBlock.registerBehavior(WARPED_CHEST_BOAT, new BoatDispenseItemBehavior(ModEntities.WARPED_CHEST_BOAT.get()));
+        });
     }
 
     // Add the example block item to the building blocks tab
